@@ -31,6 +31,9 @@ io.on('connection', function (socket) {
   socket.on('message', function (msg) {
     messageQue.push(msg)
     io.emit('message', msg)
+    while (messageQue.length >= 4) {
+      messageQue.shift()
+    }
   })
   socket.on('disconnect', function (msg) {
     let date = new Date()
@@ -45,8 +48,8 @@ io.on('connection', function (socket) {
       hour: hour.toString(10),
       min: min.toString(10)
     }
-    io.emit('message', msg)
     messageQue.push(msg)
+    io.emit('message', msg)
   })
 })
 
