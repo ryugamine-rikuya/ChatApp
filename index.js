@@ -19,8 +19,7 @@ let clientList = {}
 let socketList = {}
 io.on('connection', function (socket) {
   socket.on('login', function (msg) {
-    console.log(socket.id)
-    io.emit('message', msg)
+    socket.broadcast.emit('message', msg)
     clientList[socket.id] = msg.id
     socketList[socket.id] = msg.user
     messageQue.push(msg)
@@ -31,7 +30,7 @@ io.on('connection', function (socket) {
   socket.on('message', function (msg) {
     messageQue.push(msg)
     io.emit('message', msg)
-    while (messageQue.length >= 4) {
+    while (messageQue.length >= 50) {
       messageQue.shift()
     }
   })
