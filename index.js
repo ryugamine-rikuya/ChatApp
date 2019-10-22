@@ -54,4 +54,3 @@ app.get('/', function (req, res) {
   res.sendfile(__dirname + "/dist/index.html")
 })
 app.listen(port)
-console.log(`Node server is running on port ${port} `)
