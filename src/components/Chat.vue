@@ -26,9 +26,8 @@
 import Message from '@/components/Message'
 import io from 'socket.io-client'
 
-const host = process.env.HOST || '127.0.0.1'
-const port = process.env.PORT || 5001
-let socket = io.connect('http://' + host.toString(10) + ':' + port.toString(10))
+const url = 'https://teamlabchatapp.herokuapp.com'
+let socket = io.connect(url)
 
 export default {
   data () {
