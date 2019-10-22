@@ -1,8 +1,7 @@
 const express = require('express')
 const app = express()
-const host = process.env.HOST || '127.0.0.1'
 const port = process.env.PORT || 5001
-const server = app.listen(port, host)
+const server = app.listen(port)
 const io = require('socket.io')(server, {
   serveClient: false,
   pingInterval: 10000,
@@ -54,3 +53,4 @@ app.get('/', function (req, res) {
   res.sendfile(__dirname + "/dist/index.html")
 })
 app.listen(port)
+console.log(`Node server is running on port ${port} `)
