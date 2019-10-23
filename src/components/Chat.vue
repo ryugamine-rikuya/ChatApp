@@ -55,10 +55,7 @@ export default {
       localStorage.myId = this.myId
     }
     socket.on('message', function (msg) {
-      let date = new Date()
-      date.setTime(msg.unixtime)
-      let timeDiff = (date.getTimezoneOffset() / 60) * -1
-      date.setTime(date.getTime() + 1000 * 60 * 60 * timeDiff)
+      let date = new Date(msg.unixtime)
       msg.date = date
       msg.hour = date.getHours().toString(10).padStart(2, '0')
       msg.min = date.getMinutes().toString(10).padStart(2, '0')
