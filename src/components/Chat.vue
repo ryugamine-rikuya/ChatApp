@@ -55,17 +55,16 @@ export default {
       localStorage.myId = this.myId
     }
     socket.on('message', function (msg) {
-      let date = new Date(msg.unixtime)
-      msg.date = date
-      msg.hour = date.getHours().toString(10).padStart(2, '0')
-      msg.min = date.getMinutes().toString(10).padStart(2, '0')
+      msg.date = new Date(msg.unixtime)
+      msg.hour = msg.date.getHours().toString(10).padStart(2, '0')
+      msg.min = msg.date.getMinutes().toString(10).padStart(2, '0')
       this.messages.push(msg)
     }.bind(this))
     let unixtime = new Date().getTime()
     let msg = {
       type: 'login',
       message: 'login',
-      id: this.id,
+      id: this.myId,
       user: this.user,
       unixtime: unixtime
     }
