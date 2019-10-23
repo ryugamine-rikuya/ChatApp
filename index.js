@@ -1,9 +1,9 @@
 const express = require('express')
 const app = express()
 const port = process.env.PORT || 5001
-app.use(express.static(__dirname + "/dist/"))
+app.use(express.static(__dirname + '/dist/'))
 app.get(/.*/, function (req, res) {
-  res.sendfile(__dirname + "/dist/index.html")
+  res.sendfile(__dirname + '/dist/index.html')
 })
 
 const server = app.listen(port)
@@ -36,19 +36,24 @@ io.on('connection', function (socket) {
   })
   socket.on('disconnect', function (msg) {
     let date = new Date()
-    let hour = (date.getHours() < 10) ? '0' + date.getHours() : date.getHours()
-    let min = (date.getMinutes() < 10) ? '0' + date.getMinutes() : date.getMinutes()
+    let unixtime = date.getTime()
+    date.setTime(date.getTime() + 1000 * 60 * 60 * 9)
+    let hour = date.getHours().padStart(2, '0')
+    let min = date.getHours().padStart(2, '0')
     msg = {
       type: 'login',
       message: 'logout',
       id: clientList[socket.id],
       user: socketList[socket.id],
       date: date,
-      hour: hour.toString(10),
-      min: min.toString(10)
+      hour: hour,
+      min: min,
+      unixtime: unixtime
     }
     messageQue.push(msg)
     io.emit('message', msg)
+    while (messageQue.length >= 50) {
+      messageQue.shift()
+    }
   })
 })
-

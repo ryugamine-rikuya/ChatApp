@@ -55,19 +55,29 @@ export default {
       localStorage.myId = this.myId
     }
     socket.on('message', function (msg) {
+      let date
+      date.setTime(msg.unixtime)
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      console.log(date)
+      console.log(date.getTimezoneOffset())
+      let timeDiff = (date.getTimezoneOffset() / 60) * -1
+      console.log('timeDiff : ' + timeDiff.toString(10))
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
       this.messages.push(msg)
     }.bind(this))
     let date = new Date()
-    let hour = (date.getHours() < 10) ? '0' + date.getHours() : date.getHours()
-    let min = (date.getMinutes() < 10) ? '0' + date.getMinutes() : date.getMinutes()
+    let unixtime = date.getTime()
+    let hour = date.getHours().padStart(2, '0')
+    let min = date.getHours().padStart(2, '0')
     let msg = {
       type: 'login',
       message: 'login',
       id: this.id,
       user: this.user,
       date: date,
-      hour: hour.toString(10),
-      min: min.toString(10)
+      hour: hour,
+      min: min,
+      unixtime: unixtime
     }
     socket.emit('login', msg)
   },
@@ -81,8 +91,9 @@ export default {
   methods: {
     sendMessage: function () {
       let date = new Date()
-      let hour = (date.getHours() < 10) ? '0' + date.getHours() : date.getHours()
-      let min = (date.getMinutes() < 10) ? '0' + date.getMinutes() : date.getMinutes()
+      let unixtime = date.getTime()
+      let hour = date.getHours().padStart(2, '0')
+      let min = date.getHours().padStart(2, '0')
       let msg = {
         type: 'message',
         message: document.message_form.message.value,
@@ -90,7 +101,8 @@ export default {
         user: this.user,
         date: date,
         hour: hour,
-        min: min.toString(10)
+        min: min,
+        unixtime: unixtime
       }
       socket.emit('message', msg)
       this.newMessage = ''
