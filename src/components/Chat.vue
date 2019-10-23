@@ -64,7 +64,7 @@ export default {
     let msg = {
       type: 'login',
       message: 'login',
-      id: this.myId,
+      id: this.id,
       user: this.user,
       unixtime: unixtime
     }
