@@ -26,7 +26,7 @@
 import Message from '@/components/Message'
 import io from 'socket.io-client'
 
-const url = 'http://127.0.0.1:5001'
+const url = 'https://teamlabchatapp.herokuapp.com/#/'
 let socket = io.connect(url)
 
 export default {
