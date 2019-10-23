@@ -26,7 +26,7 @@
 import Message from '@/components/Message'
 import io from 'socket.io-client'
 
-const url = 'https://teamlabchatapp.herokuapp.com'
+const url = 'http://127.0.0.1:5001'
 let socket = io.connect(url)
 
 export default {
@@ -55,28 +55,21 @@ export default {
       localStorage.myId = this.myId
     }
     socket.on('message', function (msg) {
-      let date
+      let date = new Date()
       date.setTime(msg.unixtime)
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-      console.log(date)
-      console.log(date.getTimezoneOffset())
       let timeDiff = (date.getTimezoneOffset() / 60) * -1
-      console.log('timeDiff : ' + timeDiff.toString(10))
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      date.setTime(date.getTime() + 1000 * 60 * 60 * timeDiff)
+      msg.date = date
+      msg.hour = date.getHours().toString(10).padStart(2, '0')
+      msg.min = date.getMinutes().toString(10).padStart(2, '0')
       this.messages.push(msg)
     }.bind(this))
-    let date = new Date()
-    let unixtime = date.getTime()
-    let hour = date.getHours().padStart(2, '0')
-    let min = date.getHours().padStart(2, '0')
+    let unixtime = new Date().getTime()
     let msg = {
       type: 'login',
       message: 'login',
       id: this.id,
       user: this.user,
-      date: date,
-      hour: hour,
-      min: min,
       unixtime: unixtime
     }
     socket.emit('login', msg)
@@ -90,18 +83,12 @@ export default {
   },
   methods: {
     sendMessage: function () {
-      let date = new Date()
-      let unixtime = date.getTime()
-      let hour = date.getHours().padStart(2, '0')
-      let min = date.getHours().padStart(2, '0')
+      let unixtime = new Date().getTime()
       let msg = {
         type: 'message',
         message: document.message_form.message.value,
         id: this.myId,
         user: this.user,
-        date: date,
-        hour: hour,
-        min: min,
         unixtime: unixtime
       }
       socket.emit('message', msg)

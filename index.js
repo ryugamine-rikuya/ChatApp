@@ -35,19 +35,12 @@ io.on('connection', function (socket) {
     }
   })
   socket.on('disconnect', function (msg) {
-    let date = new Date()
-    let unixtime = date.getTime()
-    date.setTime(date.getTime() + 1000 * 60 * 60 * 9)
-    let hour = date.getHours().padStart(2, '0')
-    let min = date.getHours().padStart(2, '0')
+    let unixtime = new Date().getTime()
     msg = {
       type: 'login',
       message: 'logout',
       id: clientList[socket.id],
       user: socketList[socket.id],
-      date: date,
-      hour: hour,
-      min: min,
       unixtime: unixtime
     }
     messageQue.push(msg)
